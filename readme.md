@@ -29,7 +29,7 @@ Classification algorithms take an image and return a single output- the probabil
 
 In order to train a classification algorithm, you need to provide it with a dataset of images labeled by humans. Using this training dataset, the algorithm learns to recognize the objects that have been labeled in images it has never seen. 
 
-Classification algorithms can work well for images that only have one object of interest in them, but they are not very useful  when there is more than one object of interset.
+Classification algorithms can work well for images that only have one object of interest in them, but they are not very useful  when there is more than one object of interest.
 
 In order to get the computer to recognize distinct objects, we need to provide it with training data with ground-truth boxes drawn around the labeled objects in the image. Using this more detailed training dataset, an object detection algorithm can predict bounding boxes around objects in images it has never seen. 
 
@@ -41,14 +41,15 @@ photo credit- pyimagesearch
 
 photo credit- zeit blog
 
-
 ## Region proposal vs. fixed grid of detectors
 
 There are two approaches to generating bounding boxes around predicted objects in images using machine learning. 
 
-Traditional algorithms like [Faster R-CNN](https://arxiv.org/abs/1506.01497) use the region proposal method while the newer Single Shot Multibox Detector algorithm use a fixed grid of detectors. 
+Traditional algorithms like [Faster R-CNN](https://arxiv.org/abs/1506.01497) use the region proposal method while the newer Single Shot Multibox Detector algorithm uses a fixed grid of detectors. 
 
-Region proposal object detection algorithms operate in two steps. First, the image is broken down into regions that are likely to contain an object. Then, bounding box detectors are used to make a prediction in each proposed region.  
+Region proposal object detection algorithms operate in two steps. First, the image is broken down into regions that are likely to contain an object. 
+
+Then, bounding box detectors are used to make a prediction in each proposed region.  
 
 Fixed-grid object detection algorithms break the image down into equally sized regions, and bounding box detectors are used to make predictions in each region. Since these algorithms don't have to first break the image down into irregular regions, they are considered to be one-shot algorithms relative to the two-step region proposal family of algorithms. 
 
@@ -56,7 +57,7 @@ The major advantage of using a fixed-grid instead of proposing regions is that y
 
 As a result of these architectural improvements, fixed-grid object detection algorithms can be trained more quickly and cheaply than other image recognition algorithms. This is especially true using neural networks like Google's MobileNetV2, which was designed to be performant in the context of CPU-constrained mobile computing devices.
 
-A pre-trained version of a fixed-grid object detection algorithm developed by Liu et. al in 2016, Liu et. al in 2016, the [Single Shot Multibox Detector](https://arxiv.org/abs/1512.02325) model, is made [avalaible as part of Google's Tensorflow machine learning library](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md#coco-trained-models).
+A pre-trained version of a fixed-grid object detection algorithm developed by Liu et. al in 2016, the [Single Shot Multibox Detector](https://arxiv.org/abs/1512.02325) model, is made [avalaible as part of Google's Tensorflow machine learning library](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md#coco-trained-models).
 
 ## Code Overview
 
@@ -99,7 +100,7 @@ Unfortunately, one of the limitations of serverless lambdas is that they are mor
 
 Using JavaScript's new `async/await` syntax, we can use the `tensorflow-lambda` library to load our pre-trained machine learning model in our severless lambda.
 
-Caching the pre-trained model object detection model in local storage the first time the lambda is invoked comes with some small CPU overhead but provides a sinificant performance benefit for users who will persist their connection with the lambda.
+Caching the pre-trained model object detection model in local storage the first time the lambda is invoked comes with some small CPU overhead but provides a significant performance benefit for users who will persist their connection with the lambda.
 
 ```js
 
