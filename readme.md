@@ -4,9 +4,9 @@ One of the skills that machine-learning engineers can pick up which makes them m
 
 Historically, deploying front-end user interfaces for machine learning models to the web has been a very complicated process, involving considerable domain knowledge in networking, virtualization, containerization, and cloud computing infrastructure. 
 
-Today, it is much easier to make the results of machine learning available on the internet due to the development of [ZEIT's Now](https://zeit.co/now) global serverless deployment platform. 
+Today, it is much easier to make the results of machine learning available on the internet due to the development of the [ZEIT Now](https://zeit.co/now) global serverless deployment platform. 
 
-In this project, we'll be deploying a [Single Shot Multibox Detector](https://www.google.com/search?q=single+shot+multibox+detector&oq=Single+Shot+Multibox+Detector&aqs=chrome.0.0j69i61j0l4.182j1j7&sourceid=chrome&ie=UTF-8) image recognition machine learning model based on [Google's MobileNetV2](https://ai.googleblog.com/2018/04/mobilenetv2-next-generation-of-on.html) neural network to the cloud as a [serverless lambda](https://zeit.co/docs/v2/deployments/concepts/lambdas) using [ZEIT's Now](https://zeit.co/now).  
+In this project, we'll be deploying a [Single Shot Multibox Detector](https://www.google.com/search?q=single+shot+multibox+detector&oq=Single+Shot+Multibox+Detector&aqs=chrome.0.0j69i61j0l4.182j1j7&sourceid=chrome&ie=UTF-8) image recognition machine learning model based on [Google's MobileNetV2](https://ai.googleblog.com/2018/04/mobilenetv2-next-generation-of-on.html) neural network to the cloud as a [serverless lambda](https://zeit.co/docs/v2/deployments/concepts/lambdas) using [ZEIT Now](https://zeit.co/now).  
 
 ## TL;DR
 
@@ -162,5 +162,3 @@ Get a feel for how easy it is to deploy sites to the web using Now:
 3. `<h1>hello, world!</h1>`
 
 4. `now`
-
-
