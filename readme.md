@@ -34,9 +34,13 @@ Classification algorithms can work well for images that only have one object of 
 In order to get the computer to recognize distinct objects, we need to provide it with training data with ground-truth boxes drawn around the labeled objects in the image. Using this more detailed training dataset, an object detection algorithm can predict bounding boxes around objects in images it has never seen. 
 
 ![ground truth box](https://www.pyimagesearch.com/wp-content/uploads/2016/09/iou_stop_sign.jpg)
+
 photo credit- pyimagesearch
 
 ![example ssd output](plane.png)
+
+photo credit- zeit blog
+
 
 ## Region proposal vs. fixed grid of detectors
 
