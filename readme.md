@@ -1,43 +1,59 @@
+## Project Overview
+
+One of the skills that machine-learning engineers can pick up which makes them more valuable to their employers is the ability to deploy front-end user interfaces for the models that they develop.
+
+Historically, this has been a very complicated process, involving considerable domain knowledge in networking, virtualization and containerization, and cloud computing infrastructure. 
+
+Today, it is much easier to make the results of machine learning available on the internet due to the development of ZEIT's Now global serverless deployment platform. 
+
+For this example, we'll be deploying a Single Shot Multibox Detector image recognition machine learning model based on Google's MobileNetV2 neural network.  
+
 ## Deployment Instructions
 
-1. Clone this repository.
+1. Clone this repository to your local development environment.
 
 `$ git clone https://github.com/jdamiba/object-detection.git`
 `$ cd object-detection`
 
-2. Deploy to now. 
+2. Deploy to `now`. 
 
 `$ now`
 
 3. Go to your deployment URL.
 
-## Documentation
+## Overview of SSDlite_MobileNetV2 
 
-### Overview
+Developed by Liu et. al in 2016, the Single Shot Multibox Detector algorithm which creates bounding boxes around predicted objects in images. 
 
-Image recognition is a key application of machine learning because getting a computer to be able to independently make decisions based on information gathered from still images and/or video is of enormous econocmic and social value.
+![Screenshot of the app](plane.png)
 
-Of course, photo-sensitive sensors have been in industrial use for decades. For example, this tomato sorting machine uses optical sensors to reject unripe fruit. 
+This model is awesome because it only requires a single neural network and also eliminates the need for a feature re-sampling stage. As a result, it can be trained more quickly and cheaply than other image recognition algorithms.
 
-[![tomato sorter](https://img.youtube.com/vi/j4RWJTs0QCk/0.jpg)](https://www.youtube.com/watch?v=j4RWJTs0QCk)
+Further optimzations are achieved by training the model using Google's MobileNetV2 neural network, which was designed to do machine learning in the context of CPU-constrained mobile computing devices. 
 
-Modern image recognition systems are capable of much more complex analysis, and are networked with other computer systems. 
+## Overview of ZEIT Now
 
-[![facial recognition](https://img.youtube.com/vi/Fq1SEqNT-7c/0.jpg)](https://www.youtube.com/watch?v=Fq1SEqNT-7c)
+Now is a global serverless deployment platform, which means that it allows you to deploy machine learning models to the web without having to configure and manage a traditional web server. 
 
-Implementing image recognition algorithms and deploying them to the Internet used to be a complicated process, but recently released libraries and frameworks make it much easier.
+It can be installed as a command line utilty using `npm` or `yarn`. 
 
-### The project
+To deploy your applications, you simply run the `now` command in the terminal. Deployment settings can be managed by adding a `now.json` file in the root of your project directory. 
 
-Our goal is to deploy a website where users can upload images for analysis by a pre-trained machine learning image recognition model.
+Get a feel for how easy it is to deploy sites to the web using Now:
 
-A great tool for doing this is Google's Tensorflow library, which offers a variety of pre-trained models and an easily accessible JavaScript API. 
+1. `mkdir my_first_app && cd my_first_app`
 
-Although power users could consume our API using command line tools like `curl`, in order for users to interact with our API easily we need to build a front-end user interface which will run in web browsers.
+2. `cat > index.html`
 
-I like using the Next.js framework because it is built on top of React.js and also tightly integrated with the Now serverless application deployment platform.
+3. `<h1>hello, world!</h1>`
 
-### API Structure
+4. `now`
+
+## Overview of Serverless Lambdas
+
+Of course, deploying a web application which incorporates a machine learning model is more complex than deploying a single html file.
+
+## Deploying SSDlite_MobileNetV2 as a Serverless Lambda
 
 Our image recognition API will have one publicly accessible HTTP endpoint: `/predict`. 
 
