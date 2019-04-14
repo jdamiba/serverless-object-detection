@@ -6,9 +6,9 @@ Historically, this has been a very complicated process, involving considerable d
 
 Today, it is much easier to make the results of machine learning available on the internet due to the development of ZEIT's Now global serverless deployment platform. 
 
-For this example, we'll be deploying a Single Shot Multibox Detector image recognition machine learning model based on Google's MobileNetV2 neural network.  
+In this project, we'll be deploying a Single Shot Multibox Detector image recognition machine learning model based on Google's MobileNetV2 neural network to the cloud as a serverless lambda using ZEIT Now.  
 
-## Deployment Instructions
+## TL;DR
 
 1. Clone this repository to your local development environment.
 
@@ -23,13 +23,84 @@ For this example, we'll be deploying a Single Shot Multibox Detector image recog
 
 ## Overview of SSDlite_MobileNetV2 
 
-Developed by Liu et. al in 2016, the Single Shot Multibox Detector algorithm which creates bounding boxes around predicted objects in images. 
+Developed by Liu et. al in 2016, the [Single Shot Multibox Detector](https://arxiv.org/abs/1512.02325) is a one-shot object detection algorithm. 
 
-![Screenshot of the app](plane.png)
+![example ssd output](plane.png)
 
-This model is awesome because it only requires a single neural network and also eliminates the need for a feature re-sampling stage. As a result, it can be trained more quickly and cheaply than other image recognition algorithms.
+Unlike traditional object detection algorithms like [Faster R-CNN](https://arxiv.org/abs/1506.01497) that force you to run the detection and classification portion of the model multiple times in order to reconcile different region prososals, the SSD algorithm predicts all the bounding boxes in a single step. 
 
-Further optimzations are achieved by training the model using Google's MobileNetV2 neural network, which was designed to do machine learning in the context of CPU-constrained mobile computing devices. 
+As a result, it can be trained more quickly and cheaply than other image recognition algorithms, using neural networks like Google's MobileNetV2, which was designed to be performant in the context of CPU-constrained mobile computing devices.
+
+A pre-trained version of this model is made [avalaible as part of Google's Tensorflow machine learning library](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md#coco-trained-models).
+
+## Code Overview
+
+The application has six important concerns.
+
+1. Allow users to upload an image. (FE)
+
+2. Convert that image into a tensor. (BE)
+
+3. Fetch a pre-trained version of SSDlite_MobileNetV2. (BE)
+
+4. Run the tensor of the user's image through SSDlite_MobileNetV2. (BE)
+
+5. Convert the tensor output by the neural network into x and y coordinates describing bounding boxes. (BE)
+
+6. Draw bounding boxes around objects detected in the user's image and display the result. (FE)
+
+Concerns 1 and 6 will be handled by the application's front-end, which will be written using ZEIT's Next.js framework.
+
+Concerns 2-5 will be handled by the application's back-end API, which will be deployed to the ZEIT Now platform alongside the front-end, rather than on a traditional web server.
+
+### Back-end Overview
+
+The application's back-end is an API with a single route: `/predict`.
+
+
+It can be accessed using the `tfjs-lambda` npm package, which provides a wrapper for the Tensorflow.js API that will be performant in ZEIT Now's serverless environment.
+
+```js
+
+const loadTf = require('tfjs-lambda')
+
+let tfModelCache;
+
+async function loadModel() {
+  try {
+    const tf = await loadTf()
+
+    if (tfModelCache) {
+      return tfModelCache
+    }
+
+    tfModelCache = await tf.loadGraphModel(`${TF_MODEL_URL}/model.json`)
+    return tfModelCache
+  } catch (err) {
+    console.log(err)
+    throw BadRequestError('The model could not be loaded')
+  }
+}
+
+async function predict(tfModel, tensor) {
+  const tf = await loadTf()
+
+  const batched = await tf.tidy(() => tensor.expandDims())
+  const result = await tfModel.executeAsync(batched)
+  const scores = result[0].arraySync()[0]
+  const boxes = result[1].dataSync()
+
+  batched.dispose()
+  tf.dispose(result)
+
+  return { scores, boxes }
+}
+```
+
+Caching the pre-trained model in local storage the first time the application is invoked has some small CPU overhead but provides a sinificant performance benefit for users who will persist their connection with the application.
+
+
+  
 
 ## Overview of ZEIT Now
 
