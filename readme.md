@@ -74,19 +74,36 @@ The web application which will deploy the SSD model has six important concerns.
 
 6. Draw bounding boxes around objects detected in the user's image and display the result. (FE)
 
-Concerns 1 and 6 will be handled by the application's front-end, which will be written using ZEIT's Next.js framework.
+Concerns 1 and 6 will be handled by the application's front-end, which will be written with HTML/CSS/JS using ZEIT's Next.js framework.
 
-Concerns 2-5 will be handled by the application's back-end API, which will be deployed to the ZEIT Now platform alongside the front-end, rather than on a traditional web server.
+Concerns 2-5 will be handled by the application's back-end API, which will be written in JS and deployed as a serverless lambda alongside the front-end.
 
-### Back-end Overview
+### 1. Image Upload (FE)
+```js
 
-The application's back-end is an API with a single route: `/predict`.
+```
 
-It can be accessed using the `tfjs-lambda` npm package, which provides a wrapper for the Tensorflow.js API that will be performant in ZEIT Now's serverless environment.
+### 2. Image => Tensor
 
 ```js
 
-const loadTf = require('tfjs-lambda')
+```
+
+### 3. Fetch SSDlite_MobileNetV2
+
+In a traditional client-server architecture, we would be able to use the ubiquitous `@tensorflow/tfjs-node` npm package in order to fetch a pre-trained version of the SSDlite_MobileNetV2 object detection machine learning model.  This package provides a JavaScript implementation of the Tensorflow API that works in the Node.js runtime environment. 
+
+The function [`.loadModel()`](https://js.tensorflow.org/api/0.8.0/#loadModel) allows you to load a JSON object which describes a machine learning model. Helpfully, the Tensorflow library includes [several pre-trained models](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md). All we need to do is make a call to the Google Storage API and download the model we want into our web server's local memory.
+
+Unfortunately, one of the limitations of serverless lambdas is that they are more memory-constrained than traditional web servers. Clocking in at over 100MB, the `@tensorflow/tfjs-node` library is too big for us to upload to a serverless lambda, which usually has a 50MB max size limit. In order to work around this limitation, we will use the [`tensorflow-lambda`](https://github.com/lucleray/tensorflow-lambda) npm package developed by [Luc Leray](https://twitter.com/lucleray), which uses Google Brotli to compress `@tensorflow/tfjs-node` to a manageable size.
+
+Using JavaScript's new `async/await` syntax, we can use the `tensorflow-lambda` library to load our pre-trained machine learning model in our severless lambda.
+
+Caching the pre-trained model object detection model in local storage the first time the lambda is invoked comes with some small CPU overhead but provides a sinificant performance benefit for users who will persist their connection with the lambda.
+
+```js
+
+const loadTf = require('tensorflow-lambda')
 
 let tfModelCache;
 
@@ -98,14 +115,20 @@ async function loadModel() {
       return tfModelCache
     }
 
-    tfModelCache = await tf.loadGraphModel(`${TF_MODEL_URL}/model.json`)
+    tfModelCache = await tf.loadGraphModel(`${https://storage.googleapis.com/tfjs-models/savedmodel/ssdlite_mobilenet_v2}/model.json`)
+    
     return tfModelCache
+    
   } catch (err) {
     console.log(err)
     throw BadRequestError('The model could not be loaded')
   }
 }
+```
 
+### 4. Predict Bounding Boxes
+
+```js
 async function predict(tfModel, tensor) {
   const tf = await loadTf()
 
@@ -121,7 +144,20 @@ async function predict(tfModel, tensor) {
 }
 ```
 
-Caching the pre-trained model in local storage the first time the application is invoked comes with some small CPU overhead but provides a sinificant performance benefit for users who will persist their connection with the application.
+### 5. Bounding Boxes Tensor => X,Y Coordinates
+
+```js
+
+```
+
+### 6. Display Prediction (FE)
+
+```js
+
+```
+
+The application's back-end will serve an object detection API at the route `/predict`.
+
 
 ### Front-end Structure
 
