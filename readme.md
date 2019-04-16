@@ -1,6 +1,6 @@
 ## Project Overview
 
-Historically, deploying front-end user interfaces for machine learning models to the web has been extremely complicated. In many businesses that rely on machine learning for decision support or process automation, the team that designs and trains the machine learning models is seperate from the team that deploys those models. 
+Historically, deploying front-end user interfaces for machine learning models to the web has been extremely complicated. In many businesses that rely on machine learning for decision support or process automation, the team that designs and trains the machine learning models is seperate from the devops team that deploys those models. 
 
 Today, it is possible for forward-thinking businesses to empower their machine learning engineers to deploy their models without having to incur the overhead costs associated with having to rely on a devops support team. The key is to deploy machine learning models as serverless lambdas, taking advantage of the function-as-a-service trend in cloud computing.
 
