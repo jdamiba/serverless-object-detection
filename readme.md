@@ -1,12 +1,20 @@
 ## Project Overview
 
-One of the skills that machine-learning engineers can pick up which makes them more valuable to their employers is the ability to deploy front-end user interfaces for the models that they develop.
+Historically, deploying front-end user interfaces for machine learning models to the web has been extremely complicated. In many businesses that rely on machine learning for decision support or process automation, the team that designs and trains the machine learning models is seperate from the team that deploys those models. 
 
-Historically, deploying front-end user interfaces for machine learning models to the web has been a very complicated process, involving considerable domain knowledge in networking, virtualization, containerization, and cloud computing infrastructure. 
+Today, it is possible for forward-thinking businesses to empower their machine learning engineers to deploy their models without having to incur the overhead costs associated with having to rely on a devops support team. The key is to deploy machine learning models as serverless lambdas, taking advantage of the function-as-a-service trend in cloud computing.
 
-Today, it is much easier to make the results of machine learning available on the internet due to the development of the [ZEIT Now](https://zeit.co/now) global serverless deployment platform. 
+In order to demonstrate how straightforward it has become for machine learning engineers to deploy their models, in this repository we'll be deploying a [Single Shot Multibox Detector](https://www.google.com/search?q=single+shot+multibox+detector&oq=Single+Shot+Multibox+Detector&aqs=chrome.0.0j69i61j0l4.182j1j7&sourceid=chrome&ie=UTF-8) object detection machine learning model to the cloud as a [serverless lambda](https://zeit.co/docs/v2/deployments/concepts/lambdas) using [ZEIT Now](https://zeit.co/now). 
 
-In this project, we'll be deploying a [Single Shot Multibox Detector](https://www.google.com/search?q=single+shot+multibox+detector&oq=Single+Shot+Multibox+Detector&aqs=chrome.0.0j69i61j0l4.182j1j7&sourceid=chrome&ie=UTF-8) image recognition machine learning model based on [Google's MobileNetV2](https://ai.googleblog.com/2018/04/mobilenetv2-next-generation-of-on.html) neural network to the cloud as a [serverless lambda](https://zeit.co/docs/v2/deployments/concepts/lambdas) using [ZEIT Now](https://zeit.co/now).  
+ZEIT Now is the best choice for deploying serveless lambdas for several reasons:
+
+1. The Now Platform is [deployed on both AWS and GCP around the world](https://zeit.co/docs/v2/platform/regions-and-providers/).
+
+2. Configuring human readable URLs for model deployments is very straightforward because you can buy domain names from ZEIT. 
+
+3. Converting existing apps to serverless instead of starting from scratch is possible due to ZEIT Now Builders.
+
+4. Monorepo support: mix code in different programming languages easily. 
 
 ## TL;DR
 
